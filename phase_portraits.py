@@ -71,4 +71,5 @@ for y20 in np.linspace(0, 10 ** 7, 5):  # looping through predefined values to c
 Q = plt.quiver(Y1, Y2, u, v, color='r')
 plt.xlabel('x')
 plt.ylabel('dx/dt')
+plt.gcf().subplots_adjust(left=0.15)
 plt.show()
