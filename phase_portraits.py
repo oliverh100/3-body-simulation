@@ -41,8 +41,8 @@ solution = odeint(solver, [x0, np.sqrt(G * M / x0)], time_span, args=(G, x0, w0,
 xs = solution[:, 0]  # extracting the distance part of the solution
 vs = solution[:, 1]  # extracting the velocity part of the solution
 
-y1 = np.linspace(-5 * 10 ** 10, 5 * 10 ** 10, 50)  # creates an array for what vectors will be calculated
-y2 = np.linspace(-10 ** 7, 10 ** 7, 50)  # creates an array for what vectors will be calculated
+y1 = np.linspace(0, 4 * 10 ** 8, 50)  # creates an array for what vectors will be calculated
+y2 = np.linspace(-3 * 10 ** 4, 3 * 10 ** 4, 50)  # creates an array for what vectors will be calculated
 
 Y1, Y2 = np.meshgrid(y1, y2)  # creates an meshgrid the vectors
 
@@ -51,6 +51,18 @@ t = 0  # gives the initial for the phase portrait
 u, v = np.zeros(Y1.shape), np.zeros(Y2.shape)  # creates zero arrays with the same size as the vector arrays
 
 NI, NJ = Y1.shape  # gives the dimensions of the Y1 array to new variables
+
+x0s = [
+    116882246,
+    89197848,
+    73631201,
+    141592757,
+    100726066,
+    131988485,
+    80486526,
+    105467185,
+    127764396
+]
 
 for i in range(NI):  # looping through both dimension to calculate the vectors
     for j in range(NJ):
@@ -61,10 +73,10 @@ for i in range(NI):  # looping through both dimension to calculate the vectors
         u[i, j] = yprime[0]
         v[i, j] = yprime[1]
 
-for y20 in np.linspace(0, 10 ** 7, 5):  # looping through predefined values to create curves for
+for x20 in x0s:  # looping through predefined values to create curves for
     tspan = np.linspace(0, 10 ** 7, 200)
-    y0 = [0.0, y20]
-    ys = odeint(solver, y0, time_span, args=(G, x0, w0, m, M, n, z, alpha, L, w1))  # solving the equations using numerical integration
+    y0 = [x20, np.sqrt(G * M / x0)]
+    ys = odeint(solver, y0, time_span, args=(G, x20, w0, m, M, n, z, alpha, L, w1))  # solving the equations using numerical integration
     plt.plot(ys[:, 0], ys[:, 1], 'b-')  # plotting path
 
 #  make the plot
@@ -72,4 +84,5 @@ Q = plt.quiver(Y1, Y2, u, v, color='r')
 plt.xlabel('x')
 plt.ylabel('dx/dt')
 plt.gcf().subplots_adjust(left=0.15)
+plt.savefig('phase3.png')
 plt.show()
